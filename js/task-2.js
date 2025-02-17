@@ -24,3 +24,31 @@ const images = [
     alt: "Lighthouse Coast Sea",
   }
 ];
+
+const gallery = document.querySelector('.gallery');
+
+const markup = images
+  .map(
+    image =>
+      `<li class="gallery-item"><img src="${image.url}" alt="${image.alt}" class="gallery-img", width="360", height="300"></li>`
+  )
+  .join('');
+
+gallery.insertAdjacentHTML('afterbegin', markup);
+
+// Завдання 2
+/* Task Сonditions
+Виконуй це завдання у файлі task-2.js
+Напиши скрипт для створення галереї зображень на основі масиву даних. HTML містить список ul.gallery.
+Використовуй масив об'єктів images для створення елементів <img>, вкладених в <li>.
+Ти можеш створити й додати HTML-елементи, використовуючи document.createElement() і elem.append() або шаблонні рядки і elem.insertAdjacentHTML().
+Усі елементи галереї повинні додаватися в DOM за одну операцію додавання.
+Додай мінімальне оформлення галереї флексбоксами через CSS класи.
+На що буде звертати увагу ментор при перевірці:
+
+Створена й додана в DOM галерея із шести зображень
+Галерея додана у список ul.gallery і являє собою 6 елементів <li>, в які вкладені елементи <img>
+Для створення елементів <img> використані дані з масиву об’єктів images
+Усі елементи галереї додані в DOM за одну операцію додавання
+Є мінімальне оформлення галереї флексбоксами через CSS класи
+*/
