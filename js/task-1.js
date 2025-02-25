@@ -1,3 +1,4 @@
+/
 const categoriesEl = document.querySelector('#categories');
 
 const items = categoriesEl.querySelectorAll('.item');

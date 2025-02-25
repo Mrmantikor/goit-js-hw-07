@@ -1,24 +1,24 @@
+/
 function getRandomHexColor() {
   return `#${Math.floor(Math.random() * 16777215)
     .toString(16)
     .padStart(6, 0)}`;
 }
 
+const inputElem = document.querySelector("input");
+const btnCreateElem = document.querySelector("button[data-create]");
+const btnDestroyElem = document.querySelector("button[data-destroy]");
+const boxesElem = document.querySelector("#boxes");
 
-const inputElem = document.querySelector('input');
-const btnCreateElem = document.querySelector('button[data-create]');
-const btnDestroyElem = document.querySelector('button[data-destroy]');
-const boxesElem = document.querySelector('#boxes');
-
-const createBoxes = amount => {
+const createBoxes = (amount) => {
   let boxesSize = 30;
   const step = 10;
   const boxesElemArray = [];
   for (let i = 0; i < amount; i++) {
-    const boxElem = document.createElement('div');
+    const boxElem = document.createElement("div");
     boxElem.textContent = i + 1;
-    boxElem.style.width = boxesSize + 'px';
-    boxElem.style.height = boxesSize + 'px';
+    boxElem.style.width = boxesSize + "px";
+    boxElem.style.height = boxesSize + "px";
     boxElem.style.backgroundColor = getRandomHexColor();
     boxesElemArray.push(boxElem);
     boxesSize += step;
@@ -27,8 +27,8 @@ const createBoxes = amount => {
 };
 
 const destroyBoxes = () => {
-  boxesElem.innerHTML = '';
-  inputElem.value = '';
+  boxesElem.innerHTML = "";
+  inputElem.value = "";
 };
 
 const getBoxesAmount = () => {
@@ -37,12 +37,12 @@ const getBoxesAmount = () => {
     inputElem.valueAsNumber >= Number(inputElem.min) &&
     inputElem.valueAsNumber <= Number(inputElem.max)
   ) {
-    amount = inputElem.value;
+    amount = inputElem.valueAsNumber;
   }
   return amount;
 };
 
-btnCreateElem.addEventListener('click', () => {
+btnCreateElem.addEventListener("click", () => {
   const amount = getBoxesAmount();
   if (amount) {
     destroyBoxes();
@@ -50,7 +50,7 @@ btnCreateElem.addEventListener('click', () => {
   }
 });
 
-btnDestroyElem.addEventListener('click', destroyBoxes);
+btnDestroyElem.addEventListener("click", destroyBoxes);
 
 // Завдання 6
 /* Task Сonditions
