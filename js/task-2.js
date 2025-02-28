@@ -30,7 +30,7 @@ const gallery = document.querySelector(".gallery");
 const markup = images
   .map(
     (image) =>
-      `<li class="gallery-item"><img src="${image.url}" alt="${image.alt}" class="gallery-img", width="360", height="300"></li>`
+      `<li class="gallery-item"><img src="${image.url}" alt="${image.alt}" class="gallery-img", width="360", height="300" ></li>`
   )
   .join("");
 

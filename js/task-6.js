@@ -1,55 +1,155 @@
-function getRandomHexColor() {
-  return `#${Math.floor(Math.random() * 16777215)
-    .toString(16)
-    .padStart(6, 0)}`;
-}
+const elements = {
+  boxesDiv: document.querySelector("#boxes"),
+  controlsDiv: document.querySelector("#controls"),
+  createBtn: document.querySelector("[data-create]"),
+  destroyBtn: document.querySelector("[data-destroy]"),
+  inputAmount: document.querySelector("#controls input"),
+};
 
-const inputElem = document.querySelector("input");
-const btnCreateElem = document.querySelector("button[data-create]");
-const btnDestroyElem = document.querySelector("button[data-destroy]");
-const boxesElem = document.querySelector("#boxes");
+const STYLES = {
+  button: {
+    padding: "8px 16px",
+    borderRadius: "8px",
+    width: "120px",
+    height: "40px",
+    border: "none",
+    color: "#fff",
+  },
+  createBtn: {
+    defaultBg: "#4e75ff",
+    hoverBg: "#6c8cff",
+    marginRight: "16px",
+  },
+  destroyBtn: {
+    defaultBg: "#ff4e4e",
+    hoverBg: "#ff7070",
+  },
+  input: {
+    border: "1px solid #808080",
+    borderRadius: "8px",
+    padding: "8px 50px",
+    width: "150px",
+    height: "40px",
+    marginRight: "16px",
+  },
+  container: {
+    borderRadius: "8px",
+    padding: "20px",
+    width: "486px",
+    backgroundColor: "#f6f6fe",
+    margin: "0 auto",
+  },
+  boxes: {
+    padding: "32px",
+    display: "flex",
+    flexDirection: "row",
+    columnGap: "40px",
+    rowGap: "10px",
+    flexWrap: "wrap",
+  },
+};
+
+const applyStyles = (element, styles) => {
+  Object.assign(element.style, styles);
+};
+
+const getRandomHexColor = () =>
+  `#${Math.floor(Math.random() * 0xffffff)
+    .toString(16)
+    .padStart(6, "0")}`;
 
 const createBoxes = (amount) => {
-  let boxesSize = 30;
-  const step = 10;
-  const boxesElemArray = [];
+  const fragment = document.createDocumentFragment();
+  const initialSize = 30;
+
   for (let i = 0; i < amount; i++) {
-    const boxElem = document.createElement("div");
-    boxElem.textContent = i + 1;
-    boxElem.style.width = boxesSize + "px";
-    boxElem.style.height = boxesSize + "px";
-    boxElem.style.backgroundColor = getRandomHexColor();
-    boxesElemArray.push(boxElem);
-    boxesSize += step;
+    const size = initialSize + i * 10;
+    const box = document.createElement("div");
+    applyStyles(box, {
+      width: `${size}px`,
+      height: `${size}px`,
+      backgroundColor: getRandomHexColor(),
+    });
+    fragment.append(box);
   }
-  boxesElem.append(...boxesElemArray);
+
+  elements.boxesDiv.append(fragment);
 };
 
 const destroyBoxes = () => {
-  boxesElem.innerHTML = "";
-  inputElem.value = "";
+  elements.boxesDiv.innerHTML = "";
 };
 
-const getBoxesAmount = () => {
-  let amount = 0;
-  if (
-    inputElem.valueAsNumber >= Number(inputElem.min) &&
-    inputElem.valueAsNumber <= Number(inputElem.max)
-  ) {
-    amount = inputElem.valueAsNumber;
-  }
-  return amount;
+const validateInput = (value) => {
+  const num = parseInt(value, 10);
+  return !isNaN(num) && num >= 1 && num <= 100;
 };
 
-btnCreateElem.addEventListener("click", () => {
-  const amount = getBoxesAmount();
-  if (amount) {
+const handleCreate = () => {
+  const amount = elements.inputAmount.value.trim();
+
+  if (validateInput(amount)) {
     destroyBoxes();
-    createBoxes(amount);
+    createBoxes(parseInt(amount, 10));
+    elements.inputAmount.value = "";
+  } else {
+    alert("Please enter a valid number between 1 and 100.");
   }
-});
+};
 
-btnDestroyElem.addEventListener("click", destroyBoxes);
+const handleHover = (element, hoverColor, defaultColor) => {
+  element.addEventListener("mouseenter", () => {
+    element.style.backgroundColor = hoverColor;
+  });
+  element.addEventListener("mouseleave", () => {
+    element.style.backgroundColor = defaultColor;
+  });
+};
+
+const initializeStyles = () => {
+  applyStyles(elements.createBtn, {
+    ...STYLES.button,
+    backgroundColor: STYLES.createBtn.defaultBg,
+    marginRight: STYLES.createBtn.marginRight,
+  });
+
+  applyStyles(elements.destroyBtn, {
+    ...STYLES.button,
+    backgroundColor: STYLES.destroyBtn.defaultBg,
+  });
+
+  // Стили контейнеров и ввода
+  applyStyles(elements.controlsDiv, STYLES.container);
+  applyStyles(elements.inputAmount, STYLES.input);
+  applyStyles(elements.boxesDiv, {
+    ...STYLES.container,
+    ...STYLES.boxes,
+    height: "auto",
+  });
+
+  handleHover(
+    elements.createBtn,
+    STYLES.createBtn.hoverBg,
+    STYLES.createBtn.defaultBg
+  );
+  handleHover(
+    elements.destroyBtn,
+    STYLES.destroyBtn.hoverBg,
+    STYLES.destroyBtn.defaultBg
+  );
+};
+
+const initializeEvents = () => {
+  elements.createBtn.addEventListener("click", handleCreate);
+  elements.destroyBtn.addEventListener("click", destroyBoxes);
+};
+
+const init = () => {
+  initializeStyles();
+  initializeEvents();
+};
+
+init();
 
 // Завдання 6
 /* Task Сonditions
